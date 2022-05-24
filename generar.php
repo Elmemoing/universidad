@@ -1,160 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>PDF</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
+<?php
+require('fpdf/fpdf.php');
+include 'db.php';
 
-  <!-- Favicons -->
-  <link href="img/favicon.png" rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+$conexiondb = conectardb();
+$query = "SELECT * FROM docente";
+$resultado = mysqli_query($conexiondb, $query);
+mysqli_close($conexiondb);
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+class PDF extends FPDF
+{
+// Cabecera de página
+function Header()
+{
+    // Arial bold 15
+    $this->SetFont("Arial", "B", 12);
+    // Título
+    $this->Cell(25);
+    $this->Cell(280, 10, utf8_decode("Lista de todos los Profesores:"), 0, 0, "C");
+    //Fecha 
+    $this->SetFont("Arial", "", 10);
+    $this->Cell(25, 10, "Fecha: ". date("d/m/Y"), 0, 1, "C");
+}
 
-  <!-- Bootstrap CSS File -->
-  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+// Pie de página
+function Footer()
+{
+    // Posición: a 1,5 cm del final
+    $this->SetY(-15);
+    // Arial italic 8
+    $this->SetFont('Arial','I',8);
+    // Número de página
+    $this->Cell(0, 10, 'Pagina ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+}
+}
 
-  <!-- Libraries CSS Files -->
-  <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+$pdf = new PDF("L", "mm", "legal");
+$pdf->AliasNbPages();
+$pdf->SetMargins(5, 5, 5);
+$pdf->AddPage();
 
-  <!-- Main Stylesheet File -->
-  <link href="css/style.css" rel="stylesheet">
+$pdf->SetFont("Arial", "B", 9);
 
-</head>
+$pdf->Cell(15, 5, "N", 1, 0, "C");
+$pdf->Cell(15, 5, "Cedula", 1, 0, "C");
+$pdf->Cell(25, 5, "Nombre", 1, 0, "C");
+$pdf->Cell(25, 5, "Apellido", 1, 0, "C");
+$pdf->Cell(25, 5, "Nacimiento", 1, 0, "C");
+$pdf->Cell(25, 5, "Profesion", 1, 0, "C");
 
-<body>
+$pdf->SetFont("Arial", "", 9);
 
-  <!-- Static navbar -->
-  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        <a class="navbar-brand" href="index.html">MEMO</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="index.html">Formulario</a></li>
-          <li><a href="listado.html">Listado</a></li>
-          <li class="active"><a href="generar.html" class="smoothscroll">Generar PDF</a></li>
-        </ul>
-      </div>
-      <!--/.nav-collapse -->
-    </div>
-  </div>
+while($fila = $resultado->fetch_assoc()){
+    $pdf->Ln(10);
+    $pdf->Cell(15, 5, $fila['id_docente'], 1, 0, "C");
+    $pdf->Cell(15, 5, $fila['cedula'], 1, 0, "C");
+    $pdf->Cell(25, 5, utf8_decode($fila['nombre']), 1, 0, "C");
+    $pdf->Cell(25, 5, utf8_decode($fila['apellido']), 1, 0, "C");
+    $pdf->Cell(25, 5, utf8_decode($fila['fecha_nacimiento']), 1, 0, "C");
+    $pdf->Cell(25, 5, utf8_decode($fila['profesion']), 1, 0, "C");  
+  }
 
-
-  <div id="contactwrap">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 col-lg-offset-3">
-          <h4>NEW A WEBSITE?</h4>
-          <h1>CONTACT US</h1>
-        </div>
-      </div>
-    </div>
-    <!-- /container -->
-  </div>
-
-  <div id="contact">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-          <h2 class="centered">Contact Form</h2>
-
-          <form class="contact-form php-mail-form" role="form" action="contactform/contactform.php" method="POST">
-
-            <div class="form-group">
-              <input type="name" name="name" class="form-control" id="contact-name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" >
-              <div class="validate"></div>
-            </div>
-            <div class="form-group">
-              <input type="email" name="email" class="form-control" id="contact-email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
-              <div class="validate"></div>
-            </div>
-            <div class="form-group">
-              <input type="text" name="subject" class="form-control" id="contact-subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject">
-              <div class="validate"></div>
-            </div>
-
-            <div class="form-group">
-              <textarea class="form-control" name="message" id="contact-message" placeholder="Your Message" rows="5" data-rule="required" data-msg="Please write something for us"></textarea>
-              <div class="validate"></div>
-            </div>
-
-            <div class="loading"></div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your message has been sent. Thank you!</div>
-
-            <div class="form-send">
-              <button type="submit" class="btn btn-large">Send Message</button>
-            </div>
-
-          </form>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="social">
-    <div class="container">
-      <div class="row centered">
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-dribbble"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-facebook"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-twitter"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-linkedin"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-instagram"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-tumblr"></i></a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div id="copyrights">
-    <div class="container">
-      <p>
-        &copy; Copyrights <strong>Instant</strong>. All Rights Reserved
-      </p>
-      <div class="credits">
-        <!--
-          You are NOT allowed to delete the credit link to TemplateMag with free version.
-          You can delete the credit link only if you bought the pro version.
-          Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/instant-bootstrap-personal-template/
-          Licensing information: https://templatemag.com/license/
-        -->
-        Created with Instant template by <a href="https://templatemag.com/">TemplateMag</a>
-      </div>
-    </div>
-  </div>
-  <!-- / copyrights -->
-
-  <!-- JavaScript Libraries -->
-  <script src="lib/jquery/jquery.min.js"></script>
-  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-  <script src="lib/php-mail-form/validate.js"></script>
-
-  <!-- Template Main Javascript File -->
-  <script src="js/main.js"></script>
-
-</body>
-</html>
+$pdf->Output();
