@@ -13,9 +13,9 @@ $editar = $_POST['editar'];
 $conexiondb = conectardb();
 
 if ($editar == "si") {
-    $query = "UPDATE docente SET cedula='" . $cedula . "', nombre='" . $nombre . "', apellido='" . $apellido . "', fecha_nacimiento='" . $fecha_nacimiento . "', profesion='" . $profesion . "' WHERE cedula='" . $id_docente . "'";
+    $query = "UPDATE docente SET cedula='" . $cedula . "', nombre='" . $nombre . "', apellido='" . $apellido . "', fecha_nacimiento='" . $fecha_nacimiento . "', profesion='" . $profesion . "' WHERE id_docente='" . $nombre . "'";
 } else {
-    $query = "INSERT INTO docente (cedula, nombre, apellido, fecha_nacimiento,profesion) VALUES 
+    $query = "INSERT INTO docente (cedula, nombre, apellido, fecha_nacimiento, profesion) VALUES 
         ('$cedula', '$nombre', '$apellido', '$fecha_nacimiento', '$profesion')";
 }
 

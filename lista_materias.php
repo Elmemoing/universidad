@@ -40,9 +40,9 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
           <li><a href="index.php" class="smoothscroll">Formulario</a></li>
-          <li><a href="materia.php" class="smoothscroll">Materia</a></li>  
-          <li class="active"><a href="listado.php">Lista de Profesores</a></li>
-          <li><a href="lista_materias.php" class="smoothscroll">Lista de Materias</a></li>
+          <li><a href="materia.php" class="smoothscroll">Materia</a></li> 
+          <li><a href="listado.php" class="smoothscroll">Lista de Profesores</a></li>   
+          <li class="active"><a href="lista_materias.php">Lista de Materias</a></li>
           <li><a href="generar.php" class="smoothscroll">Generar PDF</a></li>
         </ul>
       </div>
@@ -52,8 +52,7 @@
   <?php
   include 'db.php';
   $conexiondb = conectardb();
-  $query = "SELECT * FROM docente";
-  //$query = "SELECT cedula, nombre, apellido, fecha_nacimiento, profesion, nombre_m FROM docente, materia WHERE docente.id_docente = materia.id_docente";
+  $query = "SELECT * FROM `docente`, `materia` WHERE 1";
   $resultado = mysqli_query($conexiondb, $query);
   mysqli_close($conexiondb);
   ?>
@@ -77,35 +76,30 @@
         <br>
         <br>
       <div class="rows-sm-6">
-        <h1 class="text-center mt-4">LISTADO DE PROFESORES</h1>
+        <h1 class="text-center mt-4">LISTADO DE MATERIAS</h1>
         <table class="table table-striped">
           <thead class="table-dark">
             <tr>
               <th scope="col">N</th>
-              <th scope="col">Cédula</th>
               <th scope="col">Nombre</th>
-              <th scope="col">Apelido</th>
-              <th scope="col">Nacimiento</th>
-              <th scope="col">Profesion</th>
-              <!--<th scope="col">Materia</th>-->
+              <th scope="col">horas</th>
+              <th scope="col">profesor</th>
               <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
             <?php
             $index = 1;
-            while ($docente = mysqli_fetch_assoc($resultado)) {
+            while ($materia = mysqli_fetch_assoc($resultado)) {
               echo "<tr>";
               echo "<th scope='row'>" . $index++ . "</th>";
-              echo "<td>" . $docente['cedula'] . "</td>";
-              echo "<td>" . $docente['nombre'] . "</td>";
-              echo "<td>" . $docente['apellido']. "</td>";
-              echo "<td>" . $docente['fecha_nacimiento'] . "</td>";
-              echo "<td>" . $docente['profesion'] . "</td>";
+              echo "<td>" . $materia['nombre_m'] . "</td>";
+              echo "<td>" . $materia['horas_catedras']. "</td>";
+              echo "<td>" . $materia['nombre']. "</td>";
               echo "<td>";
               echo "<td>";
-              echo "<a href='editar_docente.php?cedula=" . $docente['cedula'] . "' class='btn btn-outline-primary mx-1 my-1'> <i class=for='btnradio1'>Editar</i> </a>";
-              echo "<a href='eliminar_docente.php?cedula=" . $docente['cedula'] . "' class='btn btn-outline-primary mx-1 my-1'> <i class=for='btnradio1'>Borrar</i> </a>";
+              echo "<a href='editar_docente.php?cedula=" . $materia['id_materia'] . "' class='btn btn-outline-primary mx-1 my-1'> <i class=for='btnradio1'>Editar</i> </a>";
+              echo "<a href='eliminar_docente.php?cedula=" . $materia['id_materia'] . "' class='btn btn-outline-primary mx-1 my-1'> <i class=for='btnradio1'>Borrar</i> </a>";
               echo "</td>";
               echo "</tr>";
             }
@@ -130,6 +124,8 @@
           })
         }
       </script>
-</body>
 
+
+
+</body>
 </html>

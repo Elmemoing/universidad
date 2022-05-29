@@ -2,11 +2,11 @@
 
     require 'db.php';
 
-    $docente = $_GET['docente'];
+    $cedula = $_GET['cedula'];
 
     $conexiondb = conectardb();
 
-    $query = "DELETE FROM docente WHERE `docente`.`id_docente` = 10";
+    $query = "DELETE FROM docente WHERE cedula=".$cedula;
 
     $respuesta = mysqli_query($conexiondb, $query);
 

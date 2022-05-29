@@ -16,7 +16,7 @@ function Header()
     $this->SetFont("Arial", "B", 12);
     // Título
     $this->Cell(25);
-    $this->Cell(280, 10, utf8_decode("Lista de todos los Profesores:"), 0, 0, "C");
+    $this->Cell(140, 10, utf8_decode("Lista de todos los Profesores:"), 0, 0, "C");
     //Fecha 
     $this->SetFont("Arial", "", 10);
     $this->Cell(25, 10, "Fecha: ". date("d/m/Y"), 0, 1, "C");
@@ -34,30 +34,28 @@ function Footer()
 }
 }
 
-$pdf = new PDF("L", "mm", "legal");
+$pdf = new PDF("P", "mm", "legal");
 $pdf->AliasNbPages();
 $pdf->SetMargins(5, 5, 5);
 $pdf->AddPage();
 
 $pdf->SetFont("Arial", "B", 9);
 
-$pdf->Cell(15, 5, "N", 1, 0, "C");
-$pdf->Cell(15, 5, "Cedula", 1, 0, "C");
-$pdf->Cell(25, 5, "Nombre", 1, 0, "C");
-$pdf->Cell(25, 5, "Apellido", 1, 0, "C");
-$pdf->Cell(25, 5, "Nacimiento", 1, 0, "C");
-$pdf->Cell(25, 5, "Profesion", 1, 0, "C");
+$pdf->Cell(30, 5, "Cedula", 1, 0, "C");
+$pdf->Cell(30, 5, "Nombre", 1, 0, "C");
+$pdf->Cell(30, 5, "Apellido", 1, 0, "C");
+$pdf->Cell(30, 5, "Nacimiento", 1, 0, "C");
+$pdf->Cell(30, 5, "Profesion", 1, 0, "C");
 
 $pdf->SetFont("Arial", "", 9);
 
 while($fila = $resultado->fetch_assoc()){
     $pdf->Ln(10);
-    $pdf->Cell(15, 5, $fila['id_docente'], 1, 0, "C");
-    $pdf->Cell(15, 5, $fila['cedula'], 1, 0, "C");
-    $pdf->Cell(25, 5, utf8_decode($fila['nombre']), 1, 0, "C");
-    $pdf->Cell(25, 5, utf8_decode($fila['apellido']), 1, 0, "C");
-    $pdf->Cell(25, 5, utf8_decode($fila['fecha_nacimiento']), 1, 0, "C");
-    $pdf->Cell(25, 5, utf8_decode($fila['profesion']), 1, 0, "C");  
+    $pdf->Cell(30, 5, $fila['cedula'], 1, 0, "C");
+    $pdf->Cell(30, 5, utf8_decode($fila['nombre']), 1, 0, "C");
+    $pdf->Cell(30, 5, utf8_decode($fila['apellido']), 1, 0, "C");
+    $pdf->Cell(30, 5, utf8_decode($fila['fecha_nacimiento']), 1, 0, "C");
+    $pdf->Cell(30, 5, utf8_decode($fila['profesion']), 1, 0, "C");  
   }
 
 $pdf->Output();

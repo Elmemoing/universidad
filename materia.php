@@ -50,7 +50,8 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="index.php" class="smoothscroll">Formulario</a></li>
           <li class="active"><a href="materia.php">Materia</a></li>
-          <li><a href="listado.php" class="smoothscroll">Listado</a></li>
+          <li><a href="listado.php" class="smoothscroll">Lista de Profesores</a></li>
+          <li><a href="lista_materias.php" class="smoothscroll">Lista de Materias</a></li>
           <li><a href="generar.php" class="smoothscroll">Generar PDF</a></li>
         </ul>
       </div>
@@ -75,31 +76,32 @@
         <div class="col-md-8 col-md-offset-2">
           <h2 class="centered">REGISTRO DE MATERIA</h2>
 
-          <form class="contact-form php-mail-form" role="form" action="guardar_materia.php" method="POST">
+          <form class="contact-form php-mail-form" role="form" action="guardar_materia.php" method="Post">
             <div class="form-group">
-              <input type="text" name="materia" class="form-control" id="contact-subject" placeholder="Nombre de Materia" data-rule="minlen:4" data-msg="Por favor, complete los datos">
+              <input type="text" name="nombre_m" class="form-control" id="contact-subject" placeholder="Nombre de Materia" data-rule="minlen:4" data-msg="Por favor, complete los datos">
               <div class="validate"></div>
             </div>
             <div class="form-group">
-              <input type="text" name="horas_catedras" class="form-control" id="contact-name" placeholder="Horas Catedras" data-rule="minlen:4" data-msg="Por favor, complete los datos">
-              <div class="validate"></div>
+              <input type="number" name="horas_catedras" class="form-control" id="contact-name" placeholder="Horas Catedras" data-msg="Por favor, complete los datos">
+              <div class=""></div>
             </div>
             <div class="mb-3">
-                <th>
-                    <select name="id_docente" class=" form-control" id="inputGroupSelect01">
-                        <?php
-                        while ($pais = mysqli_fetch_assoc($resultado)) {
-                            echo "<option value='".$pais['id']."'>".$pais['nombre']."</option>";
-                        }
-                        ?>
-                    </select>
-                </th>
+              <th>
+                <select name="id_docente" class=" form-control" id="inputGroupSelect01">
+                  <?php
+                  while ($docente = mysqli_fetch_assoc($resultado)) {
+                    echo "<option value='" . $docente['id_docente'] . "'>" . $docente['nombre'] . "</option>";
+                  }
+                  ?>
+                </select>
+              </th>
             </div>
             <div class="loading"></div>
             <div class="error-message"></div>
             <div class="sent-message">Formulario completado</div>
+            <input type="hidden" name="editar" value="no" readonly>
             <div class="form-send">
-              <button type="submit" class="btn btn-large">Enviar</button>
+              <button type="submit" value="GUARDAR" class="btn btn-large">Enviar</button>
             </div>
           </form>
         </div>

@@ -2,33 +2,29 @@
 
 include 'db.php';
 
-$nombre = $_POST['materia'];
+$nombre_m = $_POST['nombre_m'];
 $horas_catedras = $_POST['horas_catedras'];
+$editar = $_POST['editar'];
 $id_docente = $_POST['id_docente'];
 
 $conexiondb = conectardb();
 
 if ($editar == "si") {
-    $query = "UPDATE docente SET materia='" . $nombre . "', horas_catedras='" . $horas_catedras . "' WHERE id='" . $id_docente . "'";
+    $query = "UPDATE materia SET nombre_m='" . $nombre_m . "', horas_catedras='" . $horas_catedras . "' WHERE materia.id_materia = " . $id_materia;
 } else {
-    $query = "INSERT INTO docente (nombre, horas_catedras, id_docente) VALUES 
-        ('$nombre', '$horas_catedras', $id_docente)";
+    $query = "INSERT INTO materia(nombre_m, horas_catedras, id_docente) 
+    VALUES ('$nombre_m','$horas_catedras',$id_docente)";
 }
 
+echo $query;
 $respuesta = mysqli_query($conexiondb, $query);
 
 if ($respuesta) {
-    if ($editar == "si") {
-        echo ("Se Actualizo la persona");
+        $message = "Se editaron los datos correctamente";
     } else {
-        echo ("Se Registro la persona");
+        $message = "Se registraron los datos correctamente";
     }
-} else {
-    if ($editar == "si") {
-        echo ("No se pudo actualizar la persona");
-    } else {
-        echo ("No se pudo registrar la persona");
-    }
-}
+
+exit();
 
 mysqli_close($conexiondb);

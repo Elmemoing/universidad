@@ -1,62 +1,41 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>Inicio</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-
-  <!-- Favicons -->
-  <link href="" rel="icon">
-  <link href="./img/favicon.png" rel="apple-touch-icon">
-
-  <!-- Fuentes Google -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
-
-  <!-- Archivos Bootstrap CSS -->
-  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Libreria CSS -->
-  <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-  <!--  Estilo principal -->
-  <link href="css/style.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Persona</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Logo superior de la pagina-->
+    <link rel="icon" type="image/png" href="./images/logo.png" sizes="16x16">
 </head>
 
 <body>
 
-  <!-- Navegador -->
-  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        <a class="navbar-brand" href="index.php">UNIVERSIDAD CATOLICA</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="index.php">Formulario</a></li>
-          <li><a href="materia.php" class="smoothscroll">Materia</a></li>  
-          <li><a href="listado.php" class="smoothscroll">Lista de Profesores</a></li>
-          <li><a href="lista_materias.php" class="smoothscroll">Lista de Materias</a></li>
-          <li><a href="generar.php" class="smoothscroll">Generar PDF</a></li>
-        </ul>
-      </div>
+    <!--Barra de navegación-->
+    <div id="navegacion">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.php">
+                    <img src="./images/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                    Instituto
+                </a>
+                <a class="nav-link" href="./docente.php">Registro del Docente</a>
+                <a class="nav-link" href="./materia.php">Registro de Materias</a>
+                <a class="nav-link" href="./listar_docente.php">Listado de Docentes</a>
+                <a class="nav-link" href="./listar_materia.php">Listado de Materia</a>
+                <a class="nav-link" href="./reporte.php">Reportes</a>
+            </div>
+        </nav>
     </div>
-  </div>
 
     <!--Conexion a la base de datos-->
     <?php
     include 'db.php';
     $conexiondb = conectardb();
-    $cedula = $_GET['cedula'];
-    $query = "SELECT * FROM docente WHERE cedula ='" . $cedula . "'";
+    $cedula = $_POST['cedula'];
+    $query = "SELECT * FROM docente";
     //$query = "SELECT cedula, nombre, apellido, nacimiento, profesion, nombre_m FROM docente, materia WHERE docente.id = materia.docente_id";
     $respuesta = mysqli_query($conexiondb, $query);
     $persona = mysqli_fetch_row($respuesta);
@@ -79,6 +58,7 @@
         </div>
     </div>
 
+    <!--Formulario para editar informacion del docente-->
     <div id="formul">
         <h1 class="text-center">Editar Docente</h1>
         <div class="col-sm-4 offset-sm-4">
@@ -92,7 +72,7 @@
 
                     <tr>
                         <th><b><label for="">Nombre:</label></b></th>
-                        <th><input type="text" name="nombre" id="" value='<?php echo $persona[2]; ?>'></th>
+                        <th><input type="text" name="nombre_d" id="" value='<?php echo $persona[2]; ?>'></th>
                     </tr>
 
                     <tr>
@@ -111,13 +91,10 @@
                     </tr>
 
                 </table>
-                <input type="hidden" name="docente_id" id="" value='<?php echo $persona[0]; ?>' readonly>
+                <input type="hidden" name="id_docente" id="" value='<?php echo $persona[0]; ?>' readonly>
                 <input type="hidden" name="editar" id="" value='si' readonly>
                 <input class="btn btn-outline-primary" type="submit" value="GUARDAR">
             </form>
-        </div>
-    </div>
-
         </div>
     </div>
 
